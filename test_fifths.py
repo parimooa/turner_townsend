@@ -1,0 +1,28 @@
+import pexpect
+
+
+def test_fifth_commands():
+    child = pexpect.spawn('python fifths.py')
+    child.expect(r'stack is \[]', timeout=2)
+    child.sendline('PUSH 3')
+    child.expect(r'stack is \[3\]', timeout=2)
+    child.sendline('PUSH 11')
+    child.expect(r'stack is \[3, 11\]', timeout=2)
+    child.sendline('+')
+    child.expect(r'stack is \[14\]', timeout=2)
+    child.sendline('DUP')
+    child.expect(r'stack is \[14, 14\]', timeout=2)
+    child.sendline('PUSH 2')
+    child.expect(r'stack is \[14, 14, 2\]', timeout=2)
+    child.sendline('*')
+    child.expect(r'stack is \[14, 28\]', timeout=2)
+    child.sendline('SWAP')
+    child.expect(r'stack is \[28, 14\]', timeout=2)
+    child.sendline('/')
+    child.expect(r'stack is \[2\]', timeout=2)
+    child.sendline('+')
+    child.expect('ERROR')
+    child.sendline('swp')
+    child.expect('WRONG COMMAND', timeout=2)
+    child.sendline('EXIT')
+    child.close()
